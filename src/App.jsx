@@ -70,11 +70,11 @@ const PROOFS = [
 function App() {
   return (
     <>
-      <main className="pt-20 bg-[#E6E6E6]  text-(--primary) font-[generalSans]">
+      <main className="xl:pt-20 pt-15 bg-[#E6E6E6]  text-(--primary) font-[generalSans]">
         <Nav />
         {/* HERO */}
         <div
-          className="max-md:min-h-screen h-screen  py-10 px-6 xl:py-10  xl:px-20 max-md:py-6 max-md:text-sm max-md:px-4"
+          className="lg:h-screen  py-10 px-6 xl:py-10  xl:px-20 max-md:py-6 max-md:text-sm max-md:px-4 max-md:min-h-screen"
           style={{
             backgroundImage: `url(${heroBg})`,
             backgroundPosition: "center",
@@ -82,42 +82,32 @@ function App() {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="flex justify-between flex-col h-full ">
-            <div className="inline-flex justify-between items-start max-md:flex-col w-full max-md:gap-2">
-              <div className="flex flex-col gap-2 xl:gap-6 w-2/3 max-lg:w-[40%] max-md:w-full">
-                <p className="w-[50%] xl:w-[40%] text-(--primary) xl:text-xl max-lg:w-full max-md:w-[60%] ">
-                  If you have a solid product but your revenue still feels
-                  unpredictable, the problem isn’t your offer, it’s how
-                  customers find you.
-                </p>
-                <p className="w-[50%] xl:w-[40%] text-(--primary) ml-50 xl:text-xl max-lg:w-full max-lg:ml-30 max-md:ml-14 text-wrap max-md:w-[60%]">
-                  Exodigital helps business owners turn paid ads into a reliable
-                  stream of leads, users, and sales, without relying on
-                  referrals or hope.
-                </p>
-              </div>
-              <p className="text-(--primary) text-nowrap mt-6 bg-[#e6e6e6] p-2 rounded-sm max-lg:text-sm max-lg:w-[30%] max-lg:text-wrap max-md:mt-2   flex max-md:justify-end flex-col  items-end max-md:w-[80%]">
-                <div className="">
-                  <span className="text-5xl leading-1 mb-4 max-md:text-3xl">
-                    ...
-                  </span>
-                  <br />
-                  Stop Guessing Where Your Next Customer Is Coming From.
-                </div>
-              </p>
-            </div>
-            <div className="flex w-full  justify-between max-md:flex-col">
-              <div className="flex flex-col gap-4 ">
-                <h1 className="text-7xl font-[upton] max-lg:text-5xl max-md:text-[64px]  ">
-                  Turn Paid Ads Into a Predictable
-                  <br /> Customer Pipeline.
-                </h1>
-                <Button name={" Book a Free Strategy Call"} />
-              </div>
-              <div className="flex w-[20%] items-end italic text-right text-(--primary) xl:text-xl  max-lg:w-[30%] max-md:w-full max-md:mt-4">
+          <div className="grid grid-cols-2 xl:gap-14 gap-6 max-md:grid-cols-1 ">
+            <div className="flex flex-col gap-4">
+              <h1 className="xl:text-8xl text-6xl font-black max-md:text-5xl ">
+                Turn Paid Ads Into a Predictable Customer Pipeline.
+              </h1>
+              <Button name={" Book a Free Strategy Call"} />
+              <div className=" opacity-60 italic">
                 For founders, owners, and marketing leads in the US, UK, EU &
                 Canada (Not for startups with no offer or enterprise giants).
               </div>
+            </div>
+            <div className="text-xl flex flex-col gap-10 ">
+              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+                If you have a solid product but your revenue still feels
+                unpredictable, the problem isn’t your offer, it’s how customers
+                find you.
+              </p>
+              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+                Exodigital helps business owners turn paid ads into a reliable
+                stream of leads, users, and sales, without relying on referrals
+                or hope.
+              </p>
+              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+                {" "}
+                Stop Guessing Where Your Next Customer Is Coming From.
+              </p>
             </div>
           </div>
         </div>

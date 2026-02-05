@@ -11,6 +11,10 @@ body {
   font-family: "upton";
   src: url("./assets/fonts/Upton-Extrabold-BF64dd8f4da2a50.otf");
 }
+@font-face {
+  font-family: "inter";
+  src: url("./assets/fonts/inter.ttf");
+}
 
 @font-face {
   font-family: "generalSans";
