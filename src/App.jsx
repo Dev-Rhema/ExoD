@@ -1,6 +1,5 @@
 import heroBg from "./assets/exoHero.svg";
 import Button from "./Button";
-
 import Section from "./Section";
 import IFrame from "./IFrame";
 import HR from "./HR";
@@ -84,7 +83,7 @@ function App() {
         >
           <div className="grid grid-cols-2 xl:gap-14 gap-6 max-md:grid-cols-1 ">
             <div className="flex flex-col gap-4">
-              <h1 className="xl:text-8xl text-7xl max-lg:text-6xl font-black max-md:text-5xl ">
+              <h1 className="xl:text-8xl text-7xl max-lg:text-6xl font-black ">
                 Turn Paid Ads Into a Predictable Customer Pipeline.
               </h1>
               <Button name={" Book a Free Strategy Call"} />
