@@ -1,6 +1,6 @@
 import heroBg from "./assets/exoHero.svg";
 import Button from "./Button";
-import noise from "./assets/noisee.png";
+
 import Section from "./Section";
 import IFrame from "./IFrame";
 import HR from "./HR";
