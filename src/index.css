@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+body {
+  background-color: #e6e6e6;
+}
+.container {
+  padding: 80px;
+}
+
+@font-face {
+  font-family: "upton";
+  src: url("./assets/fonts/Upton-Extrabold-BF64dd8f4da2a50.otf");
+}
+
+@font-face {
+  font-family: "generalSans";
+  src: url("./assets/fonts/GeneralSans-Medium.otf");
+}
+
+.blue-text {
+  color: #4086ff;
+}
+.blue-bg {
+  background-color: #001640;
+}
+@theme {
+  --primary: #001640;
+  --secondary: #4086ff;
+  --bg-color: #e6e6e6;
+}
