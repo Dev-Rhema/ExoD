@@ -3,6 +3,10 @@
 body {
   background-color: #e6e6e6;
 }
+/* Enable smooth scrolling for anchor navigation */
+html {
+  scroll-behavior: smooth;
+}
 .container {
   padding: 80px;
 }
