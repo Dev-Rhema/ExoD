@@ -70,7 +70,7 @@ const PROOFS = [
 function App() {
   return (
     <>
-      <main className="xl:pt-20 pt-15 bg-[#E6E6E6]  text-(--primary) font-[generalSans]">
+      <main className="pt-20 max-md:pt-15 bg-[#E6E6E6]  text-(--primary) font-[generalSans]">
         <Nav />
         {/* HERO */}
         <div
@@ -84,7 +84,7 @@ function App() {
         >
           <div className="grid grid-cols-2 xl:gap-14 gap-6 max-md:grid-cols-1 ">
             <div className="flex flex-col gap-4">
-              <h1 className="xl:text-8xl text-6xl font-black max-md:text-5xl ">
+              <h1 className="xl:text-8xl text-7xl max-lg:text-6xl font-black max-md:text-5xl ">
                 Turn Paid Ads Into a Predictable Customer Pipeline.
               </h1>
               <Button name={" Book a Free Strategy Call"} />
