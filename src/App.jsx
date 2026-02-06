@@ -6,6 +6,7 @@ import HR from "./HR";
 import Nav from "./Nav";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const PROCESS = [
   {
@@ -72,44 +73,157 @@ const PROOFS = [
 
 function App() {
   useGSAP(() => {
-    gsap.fromTo(
-      ".hero",
-      { x: -100, opacity: 0 },
-      {
-        x: 0,
-        opacity: 1,
-        duration: 2,
-        ease: "back.out",
-        stagger: {
-          amount: 0.7,
-          grid: [3, 1],
+    gsap.registerPlugin(ScrollTrigger);
+
+    const runAnimations = () => {
+      // Group initial entrance tweens into a single timeline to reduce concurrency
+      const initTl = gsap.timeline();
+      initTl
+        .fromTo(
+          ".hero",
+          { x: -200, opacity: 0 },
+          {
+            x: 0,
+            opacity: 1,
+            duration: 1.2,
+            ease: "back.out(1.7)",
+            stagger: 0.12,
+          },
+        )
+        .fromTo(
+          ".stagger",
+          { y: 100, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power2.out",
+            stagger: 0.15,
+          },
+          "<0.2",
+        )
+        .fromTo(
+          ".fade-in",
+          { opacity: 0 },
+          { opacity: 1, duration: 1.1, ease: "power2.out" },
+          "<0.4",
+        );
+
+      // reveal sections when their .reveal child enters viewport
+      gsap.utils.toArray(".reveal").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { y: 40, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+      });
+
+      // stagger process items inside the process section
+      gsap.fromTo(
+        ".process-item",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          stagger: 0.18,
+          scrollTrigger: {
+            trigger: ".process-section",
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
         },
-      },
-    );
-    gsap.fromTo(
-      ".stagger",
-      { y: 100 },
-      {
-        y: 0,
-        delay: 0.5,
-        duration: 1,
-        ease: "sine.in",
-        stagger: {
-          amount: 0.5,
-          grid: [3, 1],
+      );
+
+      // shrink nav on scroll — use transform (scale) instead of height/padding to avoid layout thrash
+      gsap.to(".site-nav", {
+        scale: 0.96,
+        transformOrigin: "top center",
+        ease: "power1.out",
+        scrollTrigger: {
+          start: "top top+=10",
+          end: 99999,
+          scrub: 0.6,
         },
-      },
-    );
-    gsap.fromTo(
-      ".fade-in",
-      { opacity: 0, delay: 1.2 },
-      {
-        x: 0,
-        duration: 1,
-        ease: "sine.in",
-        opacity: "100%",
-      },
-    );
+      });
+
+      // Opt-in stagger: only animate children when the parent has
+      // `data-stagger` or the `.stagger-group` class. This avoids scanning
+      // the whole DOM and creating many ScrollTriggers on load.
+      // Usage examples:
+      // <div data-stagger>...</div>
+      // <div class="stagger-group" data-stagger="0.12">...</div>
+      gsap.utils.toArray("[data-stagger], .stagger-group").forEach((parent) => {
+        // if data-stagger-selector is provided, use it to select items inside the parent
+        const selector = parent.dataset.staggerSelector || null;
+        const items = selector
+          ? parent.querySelectorAll(selector)
+          : Array.from(parent.children).filter((c) => c.nodeType === 1);
+        if (!items || items.length === 0) return;
+
+        const staggerVal = parseFloat(parent.dataset.stagger) || 0.08;
+
+        const tween = gsap.fromTo(
+          items,
+          { y: 18, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.6,
+            ease: "power2.out",
+            stagger: staggerVal,
+            scrollTrigger: {
+              trigger: parent,
+              start: "top 90%",
+              toggleActions: "play none none reverse",
+            },
+          },
+        );
+
+        // If the parent is already in view on load/refresh, play the tween immediately
+        const rect = parent.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.9) {
+          try {
+            tween.play();
+          } catch (e) {
+            /* ignore */
+          }
+        }
+      });
+    };
+
+    // Run animations after window load to avoid jank while images/fonts load
+    if (document.readyState === "complete") {
+      runAnimations();
+      ScrollTrigger.refresh();
+    } else {
+      window.addEventListener(
+        "load",
+        () => {
+          runAnimations();
+          ScrollTrigger.refresh();
+        },
+        { once: true },
+      );
+      // fallback: run after a short delay in case load doesn't fire in test envs
+      setTimeout(() => {
+        if (!ScrollTrigger.isRefreshing) {
+          runAnimations();
+          ScrollTrigger.refresh();
+        }
+      }, 1200);
+    }
   });
 
   return (
@@ -167,7 +281,7 @@ function App() {
           inset-shadow-blue-950/20 inset-shadow-sm rounded-md p-4 flex justify-between flex-col "
             >
               <div className="flex flex-col gap-4">
-                <p className="inline-block self-start bg-(--primary)/20 text-(--primary) rounded-md px-2 py-2">
+                <p className="inline-block self-start bg-(--primary)/20 text-(--primary) rounded-md px-2 py-2 fade-in">
                   THE CORE PROBLEM
                 </p>
                 <p className="text-2xl max-lg:text-xl">
@@ -297,12 +411,15 @@ function App() {
         {/* PROBLEM/APPROACH END*/}
 
         {/* OUR PROCESS */}
-        <Section title="OUR PROCESS" className="bg-(--primary) text-[#E6E6E6]">
-          <div className="flex flex-col gap-6">
+        <Section
+          title="OUR PROCESS"
+          className="bg-(--primary) text-[#E6E6E6] process-section"
+        >
+          <div data-stagger="0.14" className="flex flex-col gap-6">
             {PROCESS.map((pro) => (
               <div
                 key={pro.id}
-                className="flex w-full gap-10 items-start max-md:gap-4 maxmd"
+                className="process-item flex w-full gap-10 items-start max-md:gap-4 maxmd"
               >
                 <span
                   className={`flex font-[upton] text-4xl max-md:text-3xl max-md:w-12 max-md:h-12 text-[#E6E6E6] p-2 h-14 w-14 text-center justify-center items-center bg-radial-[at_50%_75%] from-sky-200 via-blue-400 to-indigo-900 to-90% rounded-md `}
@@ -331,10 +448,11 @@ function App() {
               height="300"
               src="https://www.youtube.com/embed/tYZi9ugG7Gk?si=g79USM9iBAeMoY3D"
               title="YouTube video player"
-              frameborder="0"
+              frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerpolicy="strict-origin-when-cross-origin"
-              allowfullscreen
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              loading="lazy"
             ></iframe>
           </div>
         </Section>
@@ -378,7 +496,10 @@ function App() {
             <h1 className="text-xl">
               Referrals are unpredictable. Organic growth takes time.
             </h1>
-            <div className="grid grid-cols-3 gap-6 max-md:gap-4 max-md:grid-cols-1">
+            <div
+              data-stagger="0.12"
+              className="grid grid-cols-3 gap-6 max-md:gap-4 max-md:grid-cols-1"
+            >
               {WHYS.map((why) => (
                 <div
                   className="p-6  bg-[#E6E6E6]/20 backdrop-blur-md rounded-md flex flex-col gap-2 shadow-lg shadow-blue-900/30 max-lg:p-4"
@@ -414,7 +535,7 @@ function App() {
           <div className="my-6">
             <HR />
           </div>
-          <div className="mt-6  w-full flex flex-col gap-6">
+          <div data-stagger="0.09" className="mt-6  w-full flex flex-col gap-6">
             {PROOFS.map((proof) => (
               <div>
                 <div className=" grid grid-cols-4 max-md:grid-cols-1">

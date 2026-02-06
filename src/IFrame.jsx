@@ -8,10 +8,11 @@ function IFrame({ src }) {
         className="rounded-md w-full h-[300px] max-lg:h-[240px]"
         src={src}
         title="YouTube video player"
-        frameborder="0"
+        frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+        loading="lazy"
       ></iframe>
     </div>
   );

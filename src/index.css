@@ -7,6 +7,17 @@ body {
 html {
   scroll-behavior: smooth;
 }
+/* Hints to the browser to use the GPU for transforms/opacity and reduce jank */
+.site-nav {
+  will-change: transform;
+}
+.reveal,
+.process-item,
+.reveal > *,
+ul li,
+.hero {
+  will-change: transform, opacity;
+}
 .container {
   padding: 80px;
 }
@@ -14,15 +25,18 @@ html {
 @font-face {
   font-family: "upton";
   src: url("./assets/fonts/Upton-Extrabold-BF64dd8f4da2a50.otf");
+  font-display: swap;
 }
 @font-face {
   font-family: "inter";
   src: url("./assets/fonts/inter.ttf");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "generalSans";
   src: url("./assets/fonts/GeneralSans-Medium.otf");
+  font-display: swap;
 }
 
 .blue-text {
