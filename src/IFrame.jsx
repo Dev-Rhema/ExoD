@@ -15,7 +15,7 @@ function IFrame({ src, title = "YouTube video player" }) {
         </div>
       )}
       <iframe
-        className={`rounded-md w-full h-[300px] max-lg:h-[240px] transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
+        className={`rounded-md w-full h-75 max-lg:h-60 transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"}`}
         src={src}
         title={title}
         frameBorder="0"
