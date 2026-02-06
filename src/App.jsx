@@ -4,6 +4,8 @@ import Section from "./Section";
 import IFrame from "./IFrame";
 import HR from "./HR";
 import Nav from "./Nav";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const PROCESS = [
   {
@@ -66,7 +68,50 @@ const PROOFS = [
   },
 ];
 
+// useGSAP must be called inside a component so it runs after mount.
+
 function App() {
+  useGSAP(() => {
+    gsap.fromTo(
+      ".hero",
+      { x: -100, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 2,
+        ease: "back.out",
+        stagger: {
+          amount: 0.7,
+          grid: [3, 1],
+        },
+      },
+    );
+    gsap.fromTo(
+      ".stagger",
+      { y: 100 },
+      {
+        y: 0,
+        delay: 0.5,
+        duration: 1,
+        ease: "sine.in",
+        stagger: {
+          amount: 0.5,
+          grid: [3, 1],
+        },
+      },
+    );
+    gsap.fromTo(
+      ".fade-in",
+      { opacity: 0, delay: 1.2 },
+      {
+        x: 0,
+        duration: 1,
+        ease: "sine.in",
+        opacity: "100%",
+      },
+    );
+  });
+
   return (
     <>
       <main className="pt-20 max-md:pt-15 bg-[#E6E6E6]  text-(--primary) font-[generalSans]">
@@ -81,29 +126,31 @@ function App() {
             backgroundRepeat: "no-repeat",
           }}
         >
-          <div className="grid grid-cols-2 xl:gap-14 gap-6 max-md:grid-cols-1 ">
+          <div className="grid grid-cols-2 xl:gap-14 gap-6 max-md:grid-cols-1">
             <div className="flex flex-col gap-4">
-              <h1 className="xl:text-8xl text-7xl max-lg:text-6xl font-black ">
+              <h1 className="xl:text-8xl text-7xl max-lg:text-6xl font-black hero">
                 Turn Paid Ads Into a Predictable Customer Pipeline.
               </h1>
-              <Button name={" Book a Free Strategy Call"} />
-              <div className=" opacity-60 italic">
+              <div className="hero">
+                <Button name={" Book a Free Strategy Call"} />
+              </div>
+              <div className=" opacity-60 italic hero">
                 For founders, owners, and marketing leads in the US, UK, EU &
                 Canada (Not for startups with no offer or enterprise giants).
               </div>
             </div>
-            <div className="text-xl flex flex-col gap-10 ">
-              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+            <div className="text-xl flex flex-col gap-10 overflow-hidden">
+              <p className="border-l-2 pl-6  border-(--primary)/20 stagger">
                 If you have a solid product but your revenue still feels
                 unpredictable, the problem isn’t your offer, it’s how customers
                 find you.
               </p>
-              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+              <p className="border-l-2 pl-6  border-(--primary)/20 stagger">
                 Exodigital helps business owners turn paid ads into a reliable
                 stream of leads, users, and sales, without relying on referrals
                 or hope.
               </p>
-              <p className="border-l-2 pl-6  border-(--primary)/20 ">
+              <p className="border-l-2 pl-6  border-(--primary)/20 stagger">
                 {" "}
                 Stop Guessing Where Your Next Customer Is Coming From.
               </p>
